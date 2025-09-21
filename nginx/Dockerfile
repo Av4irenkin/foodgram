@@ -1,3 +1,2 @@
-FROM nginx:1.21.6-alpine
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY /frontend/build /usr/share/nginx/html
+FROM nginx:1.22.1
+COPY nginx.conf /etc/nginx/templates/default.conf.template
