@@ -1,11 +1,31 @@
 version: '3.3'
 services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: foodgram
+      POSTGRES_USER: foodgram_user
+      POSTGRES_PASSWORD: foodgram_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  web:
+    build: ../backend
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ../backend:/app
+    environment:
+      DATABASE_URL: postgresql://foodgram_user:foodgram_password@db:5432/foodgram
+      DEBUG: "False"
+    depends_on:
+      - db
 
   frontend:
     container_name: foodgram-front
     build: ../frontend
     volumes:
       - ../frontend/:/app/result_build/
+
   nginx:
     container_name: foodgram-proxy
     image: nginx:1.25.4-alpine
@@ -15,3 +35,9 @@ services:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - ../frontend/build:/usr/share/nginx/html/
       - ../docs/:/usr/share/nginx/html/api/docs/
+    depends_on:
+      - web
+      - frontend
+
+volumes:
+  postgres_data:
