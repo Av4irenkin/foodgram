@@ -17,14 +17,17 @@ class User(AbstractUser):
         validators=[username_validator]
     )
     email = models.EmailField(unique=True, verbose_name='Email')
-    profile_image = models.ImageField(
+    avatar = models.ImageField(
         null=True,
         blank=True,
-        upload_to='profile_images/',
+        upload_to='avatars/',
         verbose_name='Изображение профиля'
     )
     first_name = models.CharField(max_length=50, verbose_name='Имя')
     last_name = models.CharField(max_length=50, verbose_name='Фамилия')
+
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
 
     class Meta:
         ordering = ['username']
