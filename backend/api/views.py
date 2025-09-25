@@ -14,8 +14,9 @@ from food.models import (
 )
 from .serializers import (
     RecipeReadSerializer, RecipeWriteSerializer, IngredientSerializer,
-    TagSerializer, UserSerializer, SubscribeSerializer
+    TagSerializer, UserSerializer, UserCreateSerializer, SubscribeSerializer
 )
+from django.contrib.auth.hashers import make_password
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
@@ -89,6 +90,11 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return UserCreateSerializer
+        return UserSerializer
 
     @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated])
     def me(self, request):

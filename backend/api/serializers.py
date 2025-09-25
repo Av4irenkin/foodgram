@@ -29,6 +29,19 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_is_subscribed(self, obj):
         return getattr(obj, 'is_subscribed', False)
+    
+class UserCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('email', 'username', 'first_name', 'last_name', 'password')
+        extra_kwargs = {'password': {'write_only': True}}
+    
+    def create(self, validated_data):
+        password = validated_data.pop('password')
+        user = User(**validated_data)
+        user.set_password(password)
+        user.save()
+        return user
 
 
 class SetPasswordSerializer(serializers.Serializer):
