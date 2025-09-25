@@ -4,34 +4,19 @@ from food.models import (User, Follow, Ingredient, Recipe,
                          Tag, RecipeIngredient, Favorite, ShoppingCartItem)
 
 
-class UserSerializer(serializers.ModelSerializer):
-    is_subscribed = serializers.SerializerMethodField()
+class DetailsUsersSerializer(serializers.ModelSerializer):
+    is_subscribed = serializers.SerializerMethodField(read_only=True)
+    avatar = Base64ImageField(read_only=True)
 
     class Meta:
         model = User
-        fields = ('email', 'id', 'username', 'first_name',
-                  'last_name', 'is_subscribed')
+        fields = (
+            'id', 'username', 'email', 'first_name', 'last_name',
+            'is_subscribed', 'avatar',
+        )
 
     def get_is_subscribed(self, obj):
-        request = self.context.get('request')
-        if request and request.user.is_authenticated:
-            return Follow.objects.filter(
-                follower=request.user, 
-                author=obj
-            ).exists()
-        return False
-
-
-class UserCreateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('email', 'id', 'username',
-                  'first_name', 'last_name', 'password')
-        extra_kwargs = {'password': {'write_only': True}}
-
-    def create(self, validated_data):
-        user = User.objects.create_user(**validated_data)
-        return user
+        return getattr(obj, 'is_subscribed', False)
 
 
 class SetPasswordSerializer(serializers.Serializer):
