@@ -1,0 +1,31 @@
+[33mbd1aa8d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{0}: checkout: moving from 4585f69c76ad7d5170060f324f5436e218203c53 to main
+[33m4585f69[m HEAD@{1}: commit: Current progress ++
+[33mbd1aa8d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{2}: checkout: moving from main to bd1aa8daff93b052c32e2cf111247e85bbaa9621
+[33mbd1aa8d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{3}: reset: moving to bd1aa8daff93b052c32e2cf111247e85bbaa9621
+[33mbd1aa8d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{4}: commit: Current progress +-
+[33m817ed4d[m HEAD@{5}: commit: current progress++
+[33m33bd4f3[m HEAD@{6}: commit: current progress
+[33m5bdc944[m HEAD@{7}: reset: moving to 5bdc944e8c53fe98eb6a32c69c4b10efc17a4dfb
+[33m5bdc944[m HEAD@{8}: commit: Current progress
+[33m785cdc2[m HEAD@{9}: reset: moving to 785cdc2dfe9fbca2b13c6b1219b759206e4fb547
+[33m785cdc2[m HEAD@{10}: reset: moving to 785cdc2dfe9fbca2b13c6b1219b759206e4fb547
+[33m785cdc2[m HEAD@{11}: reset: moving to 785cdc2dfe9fbca2b13c6b1219b759206e4fb547
+[33m7d30ea3[m HEAD@{12}: commit: Current progress
+[33mfb11af4[m HEAD@{13}: commit: Current progress
+[33m785cdc2[m HEAD@{14}: commit: Current progress++
+[33m197e95f[m HEAD@{15}: commit: Current progress
+[33m7b90e89[m HEAD@{16}: commit: Current progress+
+[33m1fb06a9[m HEAD@{17}: commit: Current progress
+[33m0bd08ea[m HEAD@{18}: commit: Current progress
+[33m65f81c1[m HEAD@{19}: commit: Current progress
+[33m1ac2aeb[m HEAD@{20}: reset: moving to 1ac2aebe1507490ea8099b5bea3a68d534ee50a8
+[33m8cdb7b9[m HEAD@{21}: pull --tags origin main: Fast-forward
+[33m1ac2aeb[m HEAD@{22}: reset: moving to 1ac2aebe1507490ea8099b5bea3a68d534ee50a8
+[33m8cdb7b9[m HEAD@{23}: commit: Current progress
+[33m7fb7468[m HEAD@{24}: commit: Current progress
+[33mef99e1e[m HEAD@{25}: commit: Current progress
+[33mf32854a[m HEAD@{26}: commit: Current progress
+[33m66c52ef[m HEAD@{27}: commit: Current progress
+[33m1ac2aeb[m HEAD@{28}: commit: Current progress
+[33m22a14dc[m HEAD@{29}: commit: сurrent progress
+[33me9c85e1[m HEAD@{30}: clone: from https://github.com/Av4irenkin/foodgram.git

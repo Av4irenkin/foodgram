@@ -3,9 +3,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly
 from django.shortcuts import get_object_or_404
-from django.db.models import Sum
-from django.http import HttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
+from djoser.views import UserViewSet as DjoserUserViewSet
 from rest_framework.filters import SearchFilter
 
 from food.models import (
@@ -14,9 +13,8 @@ from food.models import (
 )
 from .serializers import (
     RecipeReadSerializer, RecipeWriteSerializer, IngredientSerializer,
-    TagSerializer, UserSerializer, UserCreateSerializer, SubscribeSerializer
+    TagSerializer, UserSerializer, SubscribeSerializer
 )
-from django.contrib.auth.hashers import make_password
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
@@ -86,15 +84,10 @@ class TagViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [AllowAny]
 
 
-class UserViewSet(viewsets.ModelViewSet):
+class UserViewSet(DjoserUserViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
-
-    def get_serializer_class(self):
-        if self.action == 'create':
-            return UserCreateSerializer
-        return UserSerializer
 
     @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated])
     def me(self, request):
