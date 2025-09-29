@@ -10,5 +10,7 @@ router.register('users', views.UserViewSet)
 
 urlpatterns = [
     path('auth/', include('djoser.urls.authtoken')),
+    path('docs/openapi-schema.yml', views.openapi_schema_view, name='openapi-schema'),
+    path('docs/', views.redoc_view, name='redoc'),
     path('', include(router.urls)),
 ]

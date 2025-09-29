@@ -15,6 +15,9 @@ from .serializers import (
     RecipeReadSerializer, RecipeWriteSerializer, IngredientSerializer,
     TagSerializer, UserSerializer, SubscribeSerializer
 )
+from django.http import HttpResponse
+import os
+from django.conf import settings
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
@@ -114,3 +117,27 @@ class UserViewSet(DjoserUserViewSet):
             return self.get_paginated_response(serializer.data)
         serializer = SubscribeSerializer(authors, many=True, context={'request': request})
         return Response(serializer.data)
+
+
+def redoc_view(request):
+    """View для отображения документации Redoc"""
+    redoc_path = '/app/static/redoc/redoc.html'
+    
+    try:
+        with open(redoc_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        return HttpResponse(content)
+    except FileNotFoundError:
+        return HttpResponse(f"Redoc file not found at: {redoc_path}", status=404)
+
+def openapi_schema_view(request):
+    """View для отдачи схемы OpenAPI"""
+    schema_path = '/app/static/redoc/openapi-schema.yml'
+    
+    try:
+        with open(schema_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        response = HttpResponse(content, content_type='application/x-yaml')
+        return response
+    except FileNotFoundError:
+        return HttpResponse(f"Schema file not found at: {schema_path}", status=404)
