@@ -17,8 +17,7 @@ class Base64ImageField(serializers.ImageField):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    is_subscribed = serializers.SerializerMethodField(read_only=True)
-    avatar = Base64ImageField(read_only=True)
+    is_subscribed = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -29,7 +28,26 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_is_subscribed(self, obj):
         return getattr(obj, 'is_subscribed', False)
-    
+
+
+class UserAvatarSerializer(serializers.ModelSerializer):
+    avatar = Base64ImageField(required=False)
+
+    class Meta:
+        model = User
+        fields = ('avatar',)
+
+    def validate(self, data):
+        if self.context.get('request').method == 'DELETE':
+            if not self.instance.avatar:
+                raise serializers.ValidationError('Аватар не существует.')
+        else:
+            if not data.get('avatar'):
+                raise serializers.ValidationError(
+                    'Ни одного файла не было отправлено.'
+                )
+        return data
+
 
 class SetPasswordSerializer(serializers.Serializer):
     new_password = serializers.CharField(write_only=True)

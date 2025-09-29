@@ -16,8 +16,6 @@ from .serializers import (
     TagSerializer, UserSerializer, SubscribeSerializer
 )
 from django.http import HttpResponse
-import os
-from django.conf import settings
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
@@ -92,10 +90,11 @@ class UserViewSet(DjoserUserViewSet):
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
 
-    @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated])
+    @action(detail=False,
+            methods=['get'],
+            permission_classes=[IsAuthenticated])
     def me(self, request):
-        serializer = self.get_serializer(request.user)
-        return Response(serializer.data)
+        return super().me(request)
 
     @action(detail=True, methods=['post', 'delete'], permission_classes=[IsAuthenticated])
     def subscribe(self, request, **kwargs):
