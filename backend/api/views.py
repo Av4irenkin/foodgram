@@ -98,8 +98,10 @@ class UserViewSet(DjoserUserViewSet):
         return Response(serializer.data)
 
     @action(detail=True, methods=['post', 'delete'], permission_classes=[IsAuthenticated])
-    def subscribe(self, request, pk=None):
-        author = get_object_or_404(User, pk=pk)
+    def subscribe(self, request, **kwargs):
+        author_id = kwargs['id']
+        author = get_object_or_404(User, pk=author_id)
+        
         if request.method == 'POST':
             Follow.objects.get_or_create(follower=request.user, author=author)
             return Response(status=status.HTTP_201_CREATED)
