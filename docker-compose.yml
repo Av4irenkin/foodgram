@@ -1,6 +1,7 @@
 volumes:
   food_data:
   static_data:
+  media_volume:
 
 services:
   food_db:
@@ -16,6 +17,7 @@ services:
       - food_db
     volumes:
       - static_data:/backend_static
+      - media_volume:/app/media
 
   frontend:
     env_file: .env
@@ -28,6 +30,7 @@ services:
     build: ./nginx/
     volumes:
       - static_data:/staticfiles/
+      - media_volume:/app/media
     ports:
       - 8000:80
     depends_on:

@@ -13,7 +13,7 @@ from food.models import (
 )
 from .serializers import (
     RecipeReadSerializer, RecipeWriteSerializer, IngredientSerializer,
-    TagSerializer, UserSerializer, SubscribeSerializer
+    TagSerializer, UserSerializer, UserAvatarSerializer, SubscribeSerializer
 )
 from django.http import HttpResponse
 
@@ -77,12 +77,14 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [AllowAny]
     filter_backends = [SearchFilter]
     search_fields = ['^name']
+    pagination_class = None
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     permission_classes = [AllowAny]
+    pagination_class = None
 
 
 class UserViewSet(DjoserUserViewSet):
@@ -118,6 +120,31 @@ class UserViewSet(DjoserUserViewSet):
             return self.get_paginated_response(serializer.data)
         serializer = SubscribeSerializer(authors, many=True, context={'request': request})
         return Response(serializer.data)
+    
+    @action(detail=False,
+            methods=['put'],
+            url_path='me/avatar',
+            permission_classes=[IsAuthenticated])
+    def avatar(self, request):
+        serializer = UserAvatarSerializer(
+            request.user,
+            data=request.data,
+            context={'request': request}
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @avatar.mapping.delete
+    def delete_avatar(self, request):
+        serializer = UserAvatarSerializer(
+            request.user,
+            data={},
+            context={'request': request}
+        )
+        serializer.is_valid(raise_exception=True)
+        request.user.avatar.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 def redoc_view(request):
