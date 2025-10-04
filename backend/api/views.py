@@ -5,7 +5,6 @@ from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticate
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet as DjoserUserViewSet
-from rest_framework.filters import SearchFilter
 
 from food.models import (
     Recipe, Ingredient, Tag, User,
@@ -45,6 +44,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
         if self.action in ['create', 'update', 'partial_update']:
             return RecipeWriteSerializer
         return RecipeReadSerializer
+    
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
 
     @action(detail=True, methods=['post', 'delete'], permission_classes=[IsAuthenticated])
     def favorite(self, request, pk=None):
@@ -75,8 +77,8 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     permission_classes = [AllowAny]
-    filter_backends = [SearchFilter]
-    search_fields = ['^name']
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['name']
     pagination_class = None
 
 

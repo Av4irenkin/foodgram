@@ -72,7 +72,7 @@ class TagSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'slug')
 
 
-class RecipeIngredientSerializer(serializers.ModelSerializer):
+class RecipeIngredientReadSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField(source='ingredient.id')
     name = serializers.ReadOnlyField(source='ingredient.name')
     measurement_unit = serializers.ReadOnlyField(
@@ -85,22 +85,21 @@ class RecipeIngredientSerializer(serializers.ModelSerializer):
 
 
 class RecipeReadSerializer(serializers.ModelSerializer):
-    author = UserSerializer(read_only=True)
-    ingredients = RecipeIngredientSerializer(
-        source='recipe_ingredients', 
-        many=True, 
-        read_only=True
-    )
+    image = Base64ImageField(read_only=True)
     tags = TagSerializer(many=True, read_only=True)
+    author = UserSerializer(read_only=True)
+    ingredients = RecipeIngredientReadSerializer(
+        many=True, source='recipe_ingredients'
+    )
     is_favorited = serializers.SerializerMethodField()
     is_in_shopping_cart = serializers.SerializerMethodField()
 
     class Meta:
         model = Recipe
         fields = (
-            'id', 'tags', 'author', 'ingredients',
-            'is_favorited', 'is_in_shopping_cart', 'name',
-            'image', 'description', 'cooking_time', 'created_at'
+            'id', 'name', 'description', 'image', 'cooking_time',
+            'tags', 'author', 'ingredients', 'is_favorited', 
+            'is_in_shopping_cart'
         )
 
     def get_is_favorited(self, obj):
@@ -131,16 +130,19 @@ class RecipeIngredientWriteSerializer(serializers.ModelSerializer):
 
 
 class RecipeWriteSerializer(serializers.ModelSerializer):
+    image = Base64ImageField(required=False)
     ingredients = RecipeIngredientWriteSerializer(many=True)
     tags = serializers.PrimaryKeyRelatedField(
-        queryset=Tag.objects.all(), 
-        many=True
+        queryset=Tag.objects.all(), many=True
     )
 
     class Meta:
         model = Recipe
-        fields = ('ingredients', 'tags', 'image',
-                  'name', 'description', 'cooking_time')
+        fields = (
+            'id', 'name', 'text', 'image', 'cooking_time', 
+            'tags', 'ingredients'
+        )
+        read_only_fields = ('id',)
 
     def create(self, validated_data):
         ingredients_data = validated_data.pop('ingredients')
